@@ -3,7 +3,7 @@ import { QUALITY } from '../utils/spacedRepetition';
 
 function ReviewMode({ dueCards, currentIndex, onRate }) {
   if (!dueCards.length) {
-    return <div className="rounded-xl bg-white p-5 text-center shadow">Không có từ nào cần ôn ngay 🎉</div>;
+    return <div className="rounded-xl bg-white p-5 text-center shadow">No cards to review right now 🎉</div>;
   }
 
   const card = dueCards[currentIndex % dueCards.length];

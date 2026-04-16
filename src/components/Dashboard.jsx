@@ -13,10 +13,10 @@ function Dashboard({ stats, chartData }) {
   return (
     <div className="space-y-4">
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard title="Ôn hôm nay" value={stats.dueToday} color="bg-red-500" />
-        <StatCard title="Sắp tới hạn" value={stats.upcoming} color="bg-orange-500" />
-        <StatCard title="Tổng từ" value={stats.total} color="bg-blue-600" />
-        <StatCard title="Tiến độ" value={`${stats.progress}%`} color="bg-emerald-600" />
+        <StatCard title="Due today" value={stats.dueToday} color="bg-red-500" />
+        <StatCard title="Due soon" value={stats.upcoming} color="bg-orange-500" />
+        <StatCard title="Total words" value={stats.total} color="bg-blue-600" />
+        <StatCard title="Progress" value={`${stats.progress}%`} color="bg-emerald-600" />
       </div>
       <StatisticsChart data={chartData} />
     </div>

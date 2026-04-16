@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Header from './components/Header';
 import SearchPage from './pages/SearchPage';
 import DashboardPage from './pages/DashboardPage';
@@ -31,6 +31,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [reviewIndex, setReviewIndex] = useState(0);
   const [toast, setToast] = useState('');
+  const toastTimeoutRef = useRef(null);
 
   const dueCards = useMemo(() => cards.filter((card) => isDueToday(card.nextReviewDate)), [cards]);
 
@@ -65,9 +66,21 @@ function App() {
   }, [cards]);
 
   const notify = (message) => {
+    if (toastTimeoutRef.current) {
+      window.clearTimeout(toastTimeoutRef.current);
+    }
     setToast(message);
-    window.setTimeout(() => setToast(''), 2200);
+    toastTimeoutRef.current = window.setTimeout(() => setToast(''), 2200);
   };
+
+  useEffect(
+    () => () => {
+      if (toastTimeoutRef.current) {
+        window.clearTimeout(toastTimeoutRef.current);
+      }
+    },
+    []
+  );
 
   const updateCards = (nextCards) => {
     setCards(nextCards);
@@ -83,7 +96,7 @@ function App() {
       setSearchResult(mapApiResult(data));
     } catch {
       setSearchResult(null);
-      notify('Không tìm thấy từ vựng phù hợp.');
+      notify('Word not found.');
     } finally {
       setLoading(false);
     }
@@ -93,7 +106,7 @@ function App() {
     if (!wordData.word) return;
     const existed = cards.find((card) => card.word.toLowerCase() === wordData.word.toLowerCase());
     if (existed) {
-      notify('Từ này đã tồn tại trong flashcards.');
+      notify('This word already exists in flashcards.');
       return;
     }
 
@@ -110,7 +123,7 @@ function App() {
     };
 
     updateCards([card, ...cards]);
-    notify('Đã thêm từ vào flashcards!');
+    notify('Word added to flashcards!');
   };
 
   const rateCard = (card, quality) => {
@@ -129,12 +142,12 @@ function App() {
     );
     updateCards(nextCards);
     setReviewIndex((idx) => idx + 1);
-    notify('Đã cập nhật lịch ôn tập.');
+    notify('Review schedule updated.');
   };
 
   const deleteCard = (id) => {
     updateCards(cards.filter((card) => card.id !== id));
-    notify('Đã xóa từ khỏi danh sách.');
+    notify('Word removed from the list.');
   };
 
   const renderPage = () => {

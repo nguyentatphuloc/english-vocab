@@ -56,6 +56,8 @@ export const isDueToday = (isoDate) => new Date(isoDate) <= new Date();
 export const getDaysUntilReview = (isoDate) => {
   const now = new Date();
   const target = new Date(isoDate);
-  const diff = target.setHours(0, 0, 0, 0) - now.setHours(0, 0, 0, 0);
+  const normalizedNow = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+  const normalizedTarget = new Date(target.getFullYear(), target.getMonth(), target.getDate()).getTime();
+  const diff = normalizedTarget - normalizedNow;
   return Math.ceil(diff / DAY_MS);
 };

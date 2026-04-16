@@ -1,7 +1,14 @@
 import { useMemo, useState } from 'react';
 import { QUALITY } from '../utils/spacedRepetition';
 
-const shuffle = (arr) => [...arr].sort(() => Math.random() - 0.5);
+const shuffle = (arr) => {
+  const copy = [...arr];
+  for (let i = copy.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+};
 
 function QuizMode({ cards, onRate }) {
   const [feedback, setFeedback] = useState('');
@@ -27,7 +34,7 @@ function QuizMode({ cards, onRate }) {
   }, [cards]);
 
   if (!quiz) {
-    return <div className="rounded-xl bg-white p-5 text-center shadow">Cần ít nhất 4 từ để bắt đầu quiz.</div>;
+    return <div className="rounded-xl bg-white p-5 text-center shadow">At least 4 words are required to start the quiz.</div>;
   }
 
   const choose = (option) => {

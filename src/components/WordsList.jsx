@@ -48,7 +48,7 @@ function WordsList({ cards, onDelete }) {
           <tbody>
             {sortedCards.map((card) => {
               const days = getDaysUntilReview(card.nextReviewDate);
-              const status = days <= 0 ? 'Ôn ngay' : days <= 3 ? 'Sắp tới hạn' : 'Ổn định';
+              const status = days <= 0 ? 'Review now' : days <= 3 ? 'Due soon' : 'Stable';
               const statusClass = days <= 0 ? 'text-red-600' : days <= 3 ? 'text-orange-600' : 'text-green-600';
               return (
                 <tr key={card.id} className="border-t">
